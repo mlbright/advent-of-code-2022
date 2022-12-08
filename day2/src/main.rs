@@ -7,15 +7,19 @@ fn main() {
     println!("{}", score(INPUT, battle2));
 }
 
-fn score(s: &str, f: fn(&str) -> usize) -> usize {
-    s.trim().split('\n').map(f).sum()
+fn score(s: &str, f: fn(char, char) -> usize) -> usize {
+    s.trim().split('\n').map(|t| battle_harness(t, f)).sum()
 }
 
-fn battle2(l: &str) -> usize {
-    let mut line = l.splitn(2, ' ').fuse();
+fn battle_harness(s: &str, f: fn(char, char) -> usize) -> usize {
+    let mut line = s.splitn(2, ' ').fuse();
     let opponent = line.next().unwrap().chars().take(1).next().unwrap();
-    let outcome = line.next().unwrap().chars().take(1).next().unwrap();
-    match outcome {
+    let me = line.next().unwrap().chars().take(1).next().unwrap();
+    f(opponent, me)
+}
+
+fn battle2(opponent: char, me: char) -> usize {
+    match me {
         'X' => match opponent {
             'A' => shape('Z'),
             'B' => shape('X'),
@@ -38,10 +42,7 @@ fn battle2(l: &str) -> usize {
     }
 }
 
-fn battle1(l: &str) -> usize {
-    let mut line = l.splitn(2, ' ').fuse();
-    let opponent = line.next().unwrap().chars().take(1).next().unwrap();
-    let me = line.next().unwrap().chars().take(1).next().unwrap();
+fn battle1(opponent: char, me: char) -> usize {
     let standoff = match (opponent, me) {
         ('A', 'X') | ('B', 'Y') | ('C', 'Z') => 3,
         ('A', 'Y') | ('B', 'Z') | ('C', 'X') => 6,
