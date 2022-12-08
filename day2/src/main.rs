@@ -3,16 +3,12 @@ use std::include_str;
 const INPUT: &str = include_str!("../input");
 
 fn main() {
-    println!("{}", score_part_1(INPUT));
-    println!("{}", score_part_2(INPUT));
+    println!("{}", score(INPUT, battle1));
+    println!("{}", score(INPUT, battle2));
 }
 
-fn score_part_2(s: &str) -> usize {
-    s.trim().split('\n').map(battle2).sum()
-}
-
-fn score_part_1(s: &str) -> usize {
-    s.trim().split('\n').map(battle1).sum()
+fn score(s: &str, f: fn(&str) -> usize) -> usize {
+    s.trim().split('\n').map(f).sum()
 }
 
 fn battle2(l: &str) -> usize {
