@@ -32,7 +32,7 @@ fn badges(s: &str) -> u32 {
 }
 
 fn elf_mess_cost(s: &str) -> u32 {
-    s.trim().split('\n').map(common_item).map(priority).sum()
+    s.trim().split('\n').map(elf_mistake).map(priority).sum()
 }
 
 fn common_chars(a: &str, b: &str) -> String {
@@ -50,10 +50,12 @@ fn common_chars(a: &str, b: &str) -> String {
     first.intersection(&second).cloned().collect()
 }
 
-fn common_item(s: &str) -> char {
-    let front: String = s.chars().take(s.len() / 2).collect::<String>();
-    let back: String = s.chars().rev().take(s.len() / 2).collect::<String>();
-    common_chars(&front, &back).chars().next().unwrap()
+fn elf_mistake(s: &str) -> char {
+    let halfway = s.len() / 2;
+    common_chars(&s[..halfway], &s[halfway..])
+        .chars()
+        .next()
+        .unwrap()
 }
 
 fn priority(c: char) -> u32 {
