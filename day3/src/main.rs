@@ -6,8 +6,11 @@ fn main() {
     let input1 = include_str!("../input_part_1");
     let part1 = elf_mess_cost(input1);
     println!("{part1}");
+    assert_eq!(part1, 7742);
+
     let part2 = badges(input1);
     println!("{part2}");
+    assert_eq!(part2, 2276);
 }
 
 fn badges(s: &str) -> u32 {
@@ -16,9 +19,11 @@ fn badges(s: &str) -> u32 {
         .chunks(3)
         .into_iter()
         .map(|mut group| {
-            let one = group.next().unwrap();
-            let two = group.next().unwrap();
-            let three = group.next().unwrap();
+            let (one, two, three) = (
+                group.next().unwrap(),
+                group.next().unwrap(),
+                group.next().unwrap(),
+            );
             let common = common_chars(one, two);
             let common = common_chars(&common, three);
             priority(common.chars().next().unwrap())
@@ -46,9 +51,8 @@ fn common_chars(a: &str, b: &str) -> String {
 }
 
 fn common_item(s: &str) -> char {
-    let halfway = s.len() / 2;
-    let front: String = s.chars().take(halfway).collect::<String>();
-    let back: String = s.chars().rev().take(halfway).collect::<String>();
+    let front: String = s.chars().take(s.len() / 2).collect::<String>();
+    let back: String = s.chars().rev().take(s.len() / 2).collect::<String>();
     common_chars(&front, &back).chars().next().unwrap()
 }
 
